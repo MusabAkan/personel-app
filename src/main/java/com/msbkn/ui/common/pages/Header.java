@@ -17,7 +17,7 @@ public class Header extends HorizontalLayout {
     private void builderHeaderLayout() {
 
         Label lblHeaderText = new Label();
-        String htmlString = "<center><H1>PERSONEL PROGRAMI</H1></center>";
+        String htmlString = "<center><H1>PERSONEL WEB UYGULAMASI</H1></center>";
         lblHeaderText.setStyleName("center");
 
         lblHeaderText.setContentMode(ContentMode.HTML);

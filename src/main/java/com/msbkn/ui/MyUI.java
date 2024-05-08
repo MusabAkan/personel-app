@@ -24,12 +24,12 @@ import com.vaadin.ui.VerticalLayout;
 @Theme("mytheme")
 @Widgetset("com.msbkn.MyAppWidgetset")
 public class MyUI extends UI {
-    PersonService personService;
+
     VerticalLayout layout;
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-        personService = new PersonService();
+
         layout = new VerticalLayout();
 
         layout.setSizeFull();

@@ -1,5 +1,8 @@
 package com.msbkn.ui.pages;
 
+import com.msbkn.core.model.Person;
+import com.msbkn.core.service.PersonFileManager;
+import com.msbkn.core.service.PersonService;
 import com.msbkn.ui.common.components.*;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Notification;
@@ -11,8 +14,8 @@ public class PersonSavePage extends VerticalLayout {
     private PrImageUpload prImageUpload;
     private PrImageFile imageFile;
     private FormLayout formLayout;
-    private PrNumericField idField;
-    private PrTextField nameField;
+    private PrNumericField idNumericField;
+    private PrTextField nameTextField;
 
     public PersonSavePage() {
         setSizeFull();
@@ -24,13 +27,13 @@ public class PersonSavePage extends VerticalLayout {
     private void buildFormLayout() {
         formLayout = new FormLayout();
 
-        idField = new PrNumericField();
-        idField.setCaption("Id");
-        formLayout.addComponent(idField);
+        idNumericField = new PrNumericField();
+        idNumericField.setCaption("Id");
+        formLayout.addComponent(idNumericField);
 
-        nameField = new PrTextField();
-        nameField.setCaption("İsmi");
-        formLayout.addComponent(nameField);
+        nameTextField = new PrTextField();
+        nameTextField.setCaption("İsmi");
+        formLayout.addComponent(nameTextField);
 
         imageFile = new PrImageFile();
 
@@ -52,8 +55,33 @@ public class PersonSavePage extends VerticalLayout {
 
     private void savedItemPerson() {
 
-            long length = imageFile.file.length();
-            Notification.show(String.valueOf(length));
+        PersonService personService = new PersonFileManager();
+        String idFieldStr = idNumericField.getValue();
+
+        if (idFieldStr == null || idFieldStr == "") {
+            Notification.show("Lütfen Id değerini giriniz..");
+            return;
+        }
+
+        long idField = new Long(idFieldStr);
+        String nameField = nameTextField.getValue();
+
+        if (imageFile.file == null) {
+            Notification.show("Lütfen Dosya Seçimini yapın..");
+            return;
+        }
+
+        String pathField = imageFile.file.getPath();
+
+        Person person = new Person(idField, nameField, pathField);
+
+        boolean result = personService.savePerson(person);
+
+        if (result)
+            Notification.show("Veritabanına başarıllı bir şekilde eklenmiştir.");
+        else
+            Notification.show("Ekleme işlemi başarısız oldu!!");
+
 
     }
 }
