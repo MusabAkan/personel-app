@@ -6,16 +6,18 @@ import com.vaadin.ui.Tree;
 import com.vaadin.ui.VerticalLayout;
 
 public class Sidebar extends VerticalLayout {
-    private Tree listChildrenTree;
+    private Tree ChildrenListTree;
     private Content content;
+    private Header header;
 
     private String managerOperStr = "Yönetici İşlemleri";
     private String imagingOperStr = "Görüntüleme İşlemmleri";
     private String personSaveStr = "Personel Kaydet";
     private String personSearchStr = "Personel Ara";
 
-    public Sidebar(Content content) {
+    public Sidebar(Content content, Header header) {
         this.content = content;
+        this.header = header;
         setMargin(true);
         setSpacing(true);
         builSidebarLayout();
@@ -23,28 +25,28 @@ public class Sidebar extends VerticalLayout {
 
     private void builSidebarLayout() {
 
-        listChildrenTree = new Tree();
+        ChildrenListTree = new Tree();
 
-        listChildrenTree.addItem(managerOperStr);
-        listChildrenTree.addItem(imagingOperStr);
-        listChildrenTree.addItem(personSaveStr);
-        listChildrenTree.addItem(personSearchStr);
+        ChildrenListTree.addItem(managerOperStr);
+        ChildrenListTree.addItem(imagingOperStr);
+        ChildrenListTree.addItem(personSaveStr);
+        ChildrenListTree.addItem(personSearchStr);
 
-        listChildrenTree.setParent(personSaveStr, managerOperStr);
-        listChildrenTree.setParent(personSearchStr, imagingOperStr);
+        ChildrenListTree.setParent(personSaveStr, managerOperStr);
+        ChildrenListTree.setParent(personSearchStr, imagingOperStr);
 
         //areChildrenAllowed = parentes başka var mı ?
-        listChildrenTree.setChildrenAllowed(personSaveStr, false);
-        listChildrenTree.setChildrenAllowed(personSearchStr, false);
+        ChildrenListTree.setChildrenAllowed(personSaveStr, false);
+        ChildrenListTree.setChildrenAllowed(personSearchStr, false);
 
 
         selectedChildrenList();
 
-        addComponent(listChildrenTree);
+        addComponent(ChildrenListTree);
     }
 
     private void selectedChildrenList() {
-        listChildrenTree.addItemClickListener(event -> {
+        ChildrenListTree.addItemClickListener(event -> {
 
             String selectedItemChildren = event.getItemId().toString();
 
@@ -56,13 +58,10 @@ public class Sidebar extends VerticalLayout {
             }
             if (selectedItemChildren.equals(personSearchStr)) {
 
-                PersonListPage personListPage = new PersonListPage();
+                PersonListPage personListPage = new PersonListPage(header);
                 content.removeAllComponents();
                 content.addComponent(personListPage);
-
             }
-
-
         });
     }
 

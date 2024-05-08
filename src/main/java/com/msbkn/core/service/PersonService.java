@@ -6,4 +6,5 @@ public interface PersonService {
 
      boolean savePerson(Person person);
     List<Person> fillPersons();
+     Person findPersonById(long id);
 }

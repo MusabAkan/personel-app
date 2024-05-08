@@ -27,30 +27,41 @@ public class PersonSavePage extends VerticalLayout {
     private void buildFormLayout() {
         formLayout = new FormLayout();
 
-        idNumericField = new PrNumericField();
-        idNumericField.setCaption("Id");
-        formLayout.addComponent(idNumericField);
+        buildTextNumericFielId();
+        buildTextFieldName();
+        buildUploadFieldImage();
+        buildSaveButtonField();
 
-        nameTextField = new PrTextField();
-        nameTextField.setCaption("İsmi");
-        formLayout.addComponent(nameTextField);
+        addComponent(formLayout);
+    }
 
-        imageFile = new PrImageFile();
-
-        prImageUpload = new PrImageUpload(imageFile);
-        prImageUpload.addSucceededListener(imageFile);
-        formLayout.addComponent(prImageUpload);
-
+    private void buildSaveButtonField() {
         saveButton = new PrSaveButton();
         saveButton.setCaption("Kaydet");
         saveButton.addClickListener(clickEvent -> {
             savedItemPerson();
         });
-
         formLayout.addComponent(saveButton);
+    }
 
 
-        addComponent(formLayout);
+    private void buildUploadFieldImage() {
+        imageFile = new PrImageFile();
+        prImageUpload = new PrImageUpload(imageFile);
+        prImageUpload.addSucceededListener(imageFile);
+        formLayout.addComponent(prImageUpload);
+    }
+
+    private void buildTextFieldName() {
+        nameTextField = new PrTextField();
+        nameTextField.setCaption("İsmi");
+        formLayout.addComponent(nameTextField);
+    }
+
+    private void buildTextNumericFielId() {
+        idNumericField = new PrNumericField();
+        idNumericField.setCaption("Id");
+        formLayout.addComponent(idNumericField);
     }
 
     private void savedItemPerson() {
@@ -65,6 +76,12 @@ public class PersonSavePage extends VerticalLayout {
 
         long idField = new Long(idFieldStr);
         String nameField = nameTextField.getValue();
+
+        Person exist = personService.findPersonById(idField);
+        if (exist != null) {
+            Notification.show("Daha önce kaydedildi...");
+            return;
+        }
 
         if (imageFile.file == null) {
             Notification.show("Lütfen Dosya Seçimini yapın..");

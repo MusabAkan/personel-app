@@ -11,8 +11,7 @@ import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 
 /**
  * This UI is the application entry point. A UI may either represent a browser window
@@ -24,20 +23,19 @@ import com.vaadin.ui.VerticalLayout;
 @Theme("mytheme")
 @Widgetset("com.msbkn.MyAppWidgetset")
 public class MyUI extends UI {
-
-    VerticalLayout layout;
-
     @Override
     protected void init(VaadinRequest vaadinRequest) {
 
-        layout = new VerticalLayout();
+
+
+        VerticalLayout layout = new VerticalLayout();
 
         layout.setSizeFull();
 
         Header header = new Header();
         layout.addComponent(header);
 
-        Body body = new Body();
+        Body body = new Body(header);
         layout.addComponent(body);
 
         Footer footer = new Footer();
@@ -49,6 +47,8 @@ public class MyUI extends UI {
 
         setContent(layout);
     }
+
+
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
     @VaadinServletConfiguration(ui = MyUI.class, productionMode = false)

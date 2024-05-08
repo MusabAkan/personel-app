@@ -3,6 +3,7 @@ package com.msbkn.ui.pages;
 import com.msbkn.core.model.Person;
 import com.msbkn.core.service.PersonFileManager;
 import com.msbkn.core.service.PersonService;
+import com.msbkn.ui.common.pages.Header;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 
@@ -11,8 +12,11 @@ import java.util.List;
 public class PersonListPage extends VerticalLayout {
     Table tblData;
     PersonService service;
+    Header header;
 
-    public PersonListPage() {
+    public PersonListPage(Header header) {
+        this.header = header;
+
         setSizeFull();
         setSpacing(true);
         setMargin(true);
@@ -31,9 +35,17 @@ public class PersonListPage extends VerticalLayout {
 
         fillData();
 
-
+        selectPersonData();
 
         addComponent(tblData);
+    }
+
+    private void selectPersonData() {
+        tblData.addItemClickListener(event -> {
+            Person person = (Person) event.getItemId();
+            String captionStr = "Kullanıcı Adı : [" + person.getId() + "] " + person.getName();
+            header.btnSelectName.setCaption(captionStr);
+        });
     }
 
     private void fillData() {

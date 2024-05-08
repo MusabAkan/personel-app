@@ -21,16 +21,16 @@ public class PrImageFile implements Upload.Receiver, Upload.SucceededListener {
             return null;
         }
 
-        FileOutputStream fos = null;
+        FileOutputStream outputStream = null;
         try {
 
             file = new File("C:/uploads/" + filename);
-            fos = new FileOutputStream(file);
+            outputStream = new FileOutputStream(file);
         } catch (FileNotFoundException e) {
             new Notification("Dosya bulunamadı hacii");
             return null;
         }
-        return fos;
+        return outputStream;
     }
 
 

@@ -14,6 +14,7 @@ public class PersonFileManager implements PersonService {
     public PersonFileManager() {
         createdFile();
     }
+
     private void createdFile() {
         File file = new File(pathUrl);
         try {
@@ -40,7 +41,7 @@ public class PersonFileManager implements PersonService {
 
             FileOutputStream outputStream = new FileOutputStream(pathUrl);
             ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-            objectOutputStream.writeObject(person);
+            objectOutputStream.writeObject(personList);
             objectOutputStream.close();
 
             return true;
@@ -75,5 +76,16 @@ public class PersonFileManager implements PersonService {
             e.printStackTrace();
             return new ArrayList<>();
         }
+    }
+
+    @Override
+    public Person findPersonById(long id) {
+        List<Person> personList = fillPersons();
+        for (Person person : personList) {
+            if (person.getId() == id) {
+                return person;
+            }
+        }
+        return null;
     }
 }

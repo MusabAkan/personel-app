@@ -10,7 +10,13 @@ public class Person implements Serializable {
     private String name;
     private String imagePath;
 
+    public String getImagePath() {
+        return imagePath;
+    }
 
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
 
     public Person(long id, String name, String imagePath) {
         this.id = id;
@@ -33,7 +39,6 @@ public class Person implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-
 
     @Override
     public boolean equals(Object object) {
