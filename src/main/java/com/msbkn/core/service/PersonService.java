@@ -1,10 +1,11 @@
 package com.msbkn.core.service;
+
 import com.msbkn.core.model.Person;
 import java.util.List;
 
 public interface PersonService {
 
-     boolean savePerson(Person person);
-    List<Person> fillPersons();
-     Person findPersonById(long id);
+    boolean savePerson(Person person);
+    List<Person> readAllPersonFromFile();
+    Person findPersonById(long id);
 }

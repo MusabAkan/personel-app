@@ -3,22 +3,25 @@ package com.msbkn.ui.common.pages;
 import com.msbkn.core.model.Person;
 import com.msbkn.core.service.PersonFileManager;
 import com.msbkn.core.service.PersonService;
+import com.msbkn.ui.MyUI;
 import com.msbkn.ui.common.components.PrLabelHtmlField;
 import com.msbkn.ui.common.components.PrSelectButton;
-import com.msbkn.ui.pages.components.PersonCart;
-import com.vaadin.ui.*;
-import com.vaadin.ui.Button;
+import com.msbkn.ui.pages.components.PersonCardWindow;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 public class Header extends HorizontalLayout {
+
+    private PrSelectButton btnSelectName;
+    private Person selectedPerson = null;
+
     public Header() {
         setMargin(true);
         setSpacing(true);
         setSizeFull();
         builderHeaderLayout();
     }
-
-    public PrSelectButton btnSelectName;
 
     private void builderHeaderLayout() {
 
@@ -30,37 +33,27 @@ public class Header extends HorizontalLayout {
         btnSelectName = new PrSelectButton();
         btnSelectName.addStyleName(ValoTheme.BUTTON_LINK);
         btnSelectName.setCaption("Kullanıcı Adı : Boş");
-        btnSelectName.addClickListener(event -> {
-            showWindowField(event);
-        });
+        btnSelectName.addClickListener(event -> showWindowField());
         addComponent(btnSelectName);
 
         setComponentAlignment(btnSelectName, Alignment.TOP_CENTER);
         setComponentAlignment(lblHeaderText, Alignment.TOP_RIGHT);
-
-
     }
 
-    private void showWindowField(Button.ClickEvent event) {
-        String captionStr = event.getButton().getCaption();
-
-        int beginIndex = captionStr.indexOf("[") + 1;
-        int endIndex = captionStr.indexOf("]");
-
-        if (endIndex == -1)
-            return;
-
-        String substring = captionStr.substring(beginIndex, endIndex);
-
-        long selectItem = new Long(substring);
+    private void showWindowField() {
+        if (selectedPerson == null) return;
+        long personId = selectedPerson.getId();
 
         PersonService personService = new PersonFileManager();
-        Person person = personService.findPersonById(selectItem);
+        Person person = personService.findPersonById(personId);
 
-        PersonCart personCartPage = new PersonCart(person);
-        personCartPage.buildLayout();
-
+        PersonCardWindow personCardWindow = new PersonCardWindow(person);
+        MyUI.getCurrent().addWindow(personCardWindow);
     }
 
-
+    public void updateViewByPerson(Person person) {
+        String captionStr = "Kullanıcı Adı : [" + person.getId() + "] " + person.getName();
+        btnSelectName.setCaption(captionStr);
+        selectedPerson = person;
+    }
 }

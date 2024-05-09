@@ -10,4 +10,3 @@ public class PrSaveButton extends Button {
         addStyleName(ValoTheme.BUTTON_FRIENDLY);
     }
 }
-

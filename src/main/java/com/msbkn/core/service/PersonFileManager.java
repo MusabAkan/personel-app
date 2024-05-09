@@ -8,23 +8,18 @@ import java.util.List;
 
 public class PersonFileManager implements PersonService {
 
-
     private String pathUrl = "c:/uploads/personData.txt";
 
     public PersonFileManager() {
-        createdFile();
+        createFileIfNotExists();
     }
 
-    private void createdFile() {
+    private void createFileIfNotExists() {
         File file = new File(pathUrl);
         try {
-
-            boolean result = file.createNewFile();
-            if (result) {
-                System.out.println("Dosya oluşturuldu..");
-            } else {
-                System.out.println("Dosya zaten mevcut..");
-            }
+            boolean exists = file.exists();
+            if (exists)     System.out.println("Dosya zaten mevcut..");
+            else            file.createNewFile();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -34,15 +29,10 @@ public class PersonFileManager implements PersonService {
     public boolean savePerson(Person person) {
         try {
 
-            List<Person> personList = new ArrayList<>();
-
-            personList = fillPersons();
+            List<Person> personList = readAllPersonFromFile();
             personList.add(person);
 
-            FileOutputStream outputStream = new FileOutputStream(pathUrl);
-            ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
-            objectOutputStream.writeObject(personList);
-            objectOutputStream.close();
+            writeToFile(personList);
 
             return true;
         } catch (Exception e) {
@@ -50,28 +40,22 @@ public class PersonFileManager implements PersonService {
         }
     }
 
+    private void writeToFile(List<Person> personList) throws IOException {
+        FileOutputStream outputStream = new FileOutputStream(pathUrl);
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+        objectOutputStream.writeObject(personList);
+        objectOutputStream.close();
+    }
+
     @Override
-    public List<Person> fillPersons() {
+    public List<Person> readAllPersonFromFile() {
         try {
-            List<Person> personList = new ArrayList<Person>();
-
             FileInputStream inputStream = new FileInputStream(pathUrl);
-
-            if (inputStream.available() == 0)
-                return new ArrayList<>();
+            if (inputStream.available() == 0) return new ArrayList<>();
 
             ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
             Object object = objectInputStream.readObject();
-
-            if (object instanceof Person) {
-                Person person = (Person) object;
-                personList.add(person);
-
-            } else {
-                personList = (List<Person>) object;
-            }
-            return personList;
-
+            return  (List<Person>) object;
         } catch (Exception e) {
             e.printStackTrace();
             return new ArrayList<>();
@@ -80,7 +64,7 @@ public class PersonFileManager implements PersonService {
 
     @Override
     public Person findPersonById(long id) {
-        List<Person> personList = fillPersons();
+        List<Person> personList = readAllPersonFromFile();
         for (Person person : personList) {
             if (person.getId() == id) {
                 return person;

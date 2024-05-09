@@ -3,8 +3,6 @@ package com.msbkn.ui.common.pages;
 import com.msbkn.ui.common.components.PrLabelHtmlField;
 import com.vaadin.ui.VerticalLayout;
 
-import java.util.Date;
-
 public class Footer extends VerticalLayout {
     public Footer() {
         setSizeFull();

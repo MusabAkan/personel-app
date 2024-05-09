@@ -27,10 +27,19 @@ public class PersonSavePage extends VerticalLayout {
     private void buildFormLayout() {
         formLayout = new FormLayout();
 
-        buildTextNumericFielId();
-        buildTextFieldName();
+        idNumericField = new PrNumericField();
+        idNumericField.setCaption("Id");
+        formLayout.addComponent(idNumericField);
+
+        nameTextField = new PrTextField();
+        nameTextField.setCaption("İsmi");
+        formLayout.addComponent(nameTextField);
+
         buildUploadFieldImage();
+        formLayout.addComponent(prImageUpload);
+
         buildSaveButtonField();
+        formLayout.addComponent(saveButton);
 
         addComponent(formLayout);
     }
@@ -39,32 +48,17 @@ public class PersonSavePage extends VerticalLayout {
         saveButton = new PrSaveButton();
         saveButton.setCaption("Kaydet");
         saveButton.addClickListener(clickEvent -> {
-            savedItemPerson();
+            saveItemPerson();
         });
-        formLayout.addComponent(saveButton);
     }
-
 
     private void buildUploadFieldImage() {
         imageFile = new PrImageFile();
         prImageUpload = new PrImageUpload(imageFile);
         prImageUpload.addSucceededListener(imageFile);
-        formLayout.addComponent(prImageUpload);
     }
 
-    private void buildTextFieldName() {
-        nameTextField = new PrTextField();
-        nameTextField.setCaption("İsmi");
-        formLayout.addComponent(nameTextField);
-    }
-
-    private void buildTextNumericFielId() {
-        idNumericField = new PrNumericField();
-        idNumericField.setCaption("Id");
-        formLayout.addComponent(idNumericField);
-    }
-
-    private void savedItemPerson() {
+    private void saveItemPerson() {
 
         PersonService personService = new PersonFileManager();
         String idFieldStr = idNumericField.getValue();
@@ -85,17 +79,13 @@ public class PersonSavePage extends VerticalLayout {
 
         String pathField = "";
 
-        if (imageFile.file != null)
-            pathField = imageFile.file.getPath();
-
+        boolean fileExists = imageFile.file != null;
+        if (fileExists) pathField = imageFile.file.getPath();
 
         Person person = new Person(idField, nameField, pathField);
-
         boolean result = personService.savePerson(person);
 
-        if (result)
-            Notification.show("Veritabanına başarıllı bir şekilde eklenmiştir.");
-        else
-            Notification.show("Ekleme işlemi başarısız oldu!!");
+        if (result) Notification.show("Veritabanına başarıllı bir şekilde eklenmiştir.");
+        else        Notification.show("Ekleme işlemi başarısız oldu!!");
     }
 }

@@ -87,8 +87,7 @@ public class PersonListPage extends VerticalLayout {
     private void selectPersonData() {
         tblData.addItemClickListener(event -> {
             Person person = (Person) event.getItemId();
-            String captionStr = "Kullanıcı Adı : [" + person.getId() + "] " + person.getName();
-            header.btnSelectName.setCaption(captionStr);
+            header.updateViewByPerson(person);
         });
     }
 
@@ -96,15 +95,13 @@ public class PersonListPage extends VerticalLayout {
         tblData.removeAllItems();
         service = new PersonFileManager();
 
-        List<Person> personList = service.fillPersons();
+        List<Person> personList = service.readAllPersonFromFile();
 
-        if (personList == null)
-            return;
+        if (personList == null) return;
 
         for (Person person : personList) {
             addItemToTable(person);
         }
-
     }
 
     private void addItemToTable(Person person) {
