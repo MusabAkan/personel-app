@@ -1,7 +1,5 @@
 package com.msbkn.core.model;
 
-import com.vaadin.ui.Image;
-
 import java.io.Serializable;
 import java.util.Objects;
 

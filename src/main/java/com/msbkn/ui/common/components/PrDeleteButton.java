@@ -9,7 +9,4 @@ public class PrDeleteButton extends Button {
         setIcon(FontAwesome.TRASH);
         setStyleName(ValoTheme.BUTTON_DANGER);
     }
-
-
-
 }

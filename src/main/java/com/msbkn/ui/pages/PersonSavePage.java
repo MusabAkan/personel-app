@@ -83,12 +83,11 @@ public class PersonSavePage extends VerticalLayout {
             return;
         }
 
-        if (imageFile.file == null) {
-            Notification.show("Lütfen Dosya Seçimini yapın..");
-            return;
-        }
+        String pathField = "";
 
-        String pathField = imageFile.file.getPath();
+        if (imageFile.file != null)
+            pathField = imageFile.file.getPath();
+
 
         Person person = new Person(idField, nameField, pathField);
 
@@ -98,7 +97,5 @@ public class PersonSavePage extends VerticalLayout {
             Notification.show("Veritabanına başarıllı bir şekilde eklenmiştir.");
         else
             Notification.show("Ekleme işlemi başarısız oldu!!");
-
-
     }
 }

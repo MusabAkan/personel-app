@@ -12,7 +12,6 @@ import java.io.OutputStream;
 
 public class PrImageFile implements Upload.Receiver, Upload.SucceededListener {
     public File file;
-
     final Embedded image = new Embedded("Resim Yükle *.png |.jpeg ");
 
     public OutputStream receiveUpload(String filename, String mimeType) {
@@ -20,14 +19,12 @@ public class PrImageFile implements Upload.Receiver, Upload.SucceededListener {
         if (!mimeType.equals("image/jpeg") && !mimeType.equals("image/png")) {
             return null;
         }
-
         FileOutputStream outputStream = null;
         try {
-
-            file = new File("C:/uploads/" + filename);
+            file = new File(filename);
             outputStream = new FileOutputStream(file);
         } catch (FileNotFoundException e) {
-            new Notification("Dosya bulunamadı hacii");
+            new Notification("Hatalı yada Dosya bulunamadı..");
             return null;
         }
         return outputStream;
